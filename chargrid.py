@@ -378,26 +378,28 @@ print("fourth_output",a)
 print("fourth_output",b)
 
 class Chargrid2D(nn.Module):
-    def __init__(self, input_channels, n_classes, n_a=1, base_channels=16):
+    def __init__(self, input_channels, output_channel):
         super(Chargrid2D, self).__init__()
 
         self.encoder = Encoder(input_channels)
-        self.semantic_segmentation_decoder = semanticSegmentationDecoder(input_channels,n_classes)
-        self.bounding_box_regression_decoder = BoundingBoxRegressionDecoder(input_channels,n_a)
+        self.semantic_segmentation_decoder = semanticSegmentationDecoder(input_channels, output_channel)
+        # self.bounding_box_regression_decoder = BoundingBoxRegressionDecoder(input_channels,n_a)
 
     def forward(self, x):
         x = self.encoder(x)
         y1 = self.semantic_segmentation_decoder(x)
-        y2, y3 = self.bounding_box_regression_decoder(x)
+        # y2, y3 = self.bounding_box_regression_decoder(x)
 
-        return y1, y2, y3
+        # return y1, 
+        return y1
 
-model = Chargrid2D(input_channels=302, n_classes=10)
-x = torch.ones((1, 302, 512, 512))
-y1, y2, y3 = model(x)
+model = Chargrid2D(input_channels=3, output_channel=197)
+x = torch.ones((1, 3, 512, 512))
+# y1, y2, y3 = model(x)
+y1 = model(x)
 print("y1 size")
 print(y1.size())
-print("y2 size")
-print(y2.size())
-print("y3 size")
-print(y3.size())
+# print("y2 size")
+# print(y2.size())
+# print("y3 size")
+# print(y3.size())
